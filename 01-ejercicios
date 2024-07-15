@@ -1,0 +1,73 @@
+# Create a new flowchart image for the new problem
+width, height = 800, 600
+image = Image.new('RGB', (width, height), 'white')
+draw = ImageDraw.Draw(image)
+
+# Define colors and font
+box_color = "lightgreen"
+text_color = "black"
+arrow_color = "black"
+font = ImageFont.load_default()
+
+# Draw the shapes
+shapes = {
+    "inicio": ((350, 50), (450, 100)),
+    "entrada1": ((250, 150), (550, 200)),
+    "entrada2": ((250, 250), (550, 300)),
+    "proceso1": ((250, 350), (550, 400)),
+    "salida1": ((250, 450), (550, 500)),
+    "entrada3": ((250, 550), (550, 600)),
+    "proceso2": ((250, 650), (550, 700)),
+    "salida2": ((250, 750), (550, 800)),
+    "fin": ((350, 850), (450, 900))
+}
+
+draw.rectangle(shapes["inicio"], fill=box_color, outline="black")
+draw.rectangle(shapes["entrada1"], fill=box_color, outline="black")
+draw.rectangle(shapes["entrada2"], fill=box_color, outline="black")
+draw.rectangle(shapes["proceso1"], fill=box_color, outline="black")
+draw.rectangle(shapes["salida1"], fill=box_color, outline="black")
+draw.rectangle(shapes["entrada3"], fill=box_color, outline="black")
+draw.rectangle(shapes["proceso2"], fill=box_color, outline="black")
+draw.rectangle(shapes["salida2"], fill=box_color, outline="black")
+draw.rectangle(shapes["fin"], fill=box_color, outline="black")
+
+# Draw the arrows
+arrows = [
+    ((400, 100), (400, 150)),   # From Inicio to Entrada1
+    ((400, 200), (400, 250)),   # From Entrada1 to Entrada2
+    ((400, 300), (400, 350)),   # From Entrada2 to Proceso1
+    ((400, 400), (400, 450)),   # From Proceso1 to Salida1
+    ((400, 500), (400, 550)),   # From Salida1 to Entrada3
+    ((400, 600), (400, 650)),   # From Entrada3 to Proceso2
+    ((400, 700), (400, 750)),   # From Proceso2 to Salida2
+    ((400, 800), (400, 850))    # From Salida2 to Fin
+]
+
+for arrow in arrows:
+    draw.line(arrow, fill=arrow_color, width=2)
+    draw.polygon([arrow[1], (arrow[1][0]-5, arrow[1][1]-10), (arrow[1][0]+5, arrow[1][1]-10)], fill=arrow_color)
+
+# Add the text
+texts = {
+    "inicio": "Inicio",
+    "entrada1": "Leer num1",
+    "entrada2": "Leer num2",
+    "proceso1": "suma = num1 + num2",
+    "salida1": "Mostrar suma",
+    "entrada3": "Leer num3",
+    "proceso2": "resultado = suma * num3",
+    "salida2": "Mostrar resultado",
+    "fin": "Fin"
+}
+
+for key, value in shapes.items():
+    w, h = draw.textsize(texts[key], font=font)
+    draw.text((value[0][0] + (value[1][0] - value[0][0]) / 2 - w / 2, value[0][1] + (value[1][1] - value[0][1]) / 2 - h / 2), texts[key], fill=text_color, font=font)
+
+# Save the image
+new_image_path = "/mnt/data/flowchart_sum_multiplication.png"
+image.save(new_image_path)
+
+image.show()
+new_image_path
